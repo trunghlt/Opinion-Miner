@@ -1,0 +1,338 @@
+%
+% A simple LaTeX template for Books
+%  (c) Aleksander Morgado <aleksander@es.gnu.org>
+%  Released into public domain
+%
+
+\documentclass{article}
+\usepackage[a4paper, top=3cm, bottom=3cm]{geometry}
+\usepackage[latin1]{inputenc}
+\usepackage{setspace}
+\usepackage{fancyhdr}
+\usepackage{tocloft}
+\usepackage{hyperref}
+\usepackage{times}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{natbib}
+
+\begin{document}
+
+
+\pagestyle{empty}
+%\pagenumbering{}
+% Set book title
+\title{\textbf{Opinion Mining}}
+% Include Author name and Copyright holder name
+\author{Trung Huynh}
+
+
+
+% 1st page for the Title
+%-------------------------------------------------------------------------------
+\maketitle
+
+
+% 2nd page, thanks message
+%-------------------------------------------------------------------------------
+\thispagestyle{empty}
+\thanks{Thanks to Dr Jun Wang}
+
+
+
+% General definitions for all Chapters
+%-------------------------------------------------------------------------------
+
+% Define Page style for all chapters
+\pagestyle{fancy}
+% Delete the current section for header and footer
+\fancyhf{}
+% Set custom header
+\lhead[]{\thepage}
+\rhead[\thepage]{}
+
+% Set arabic (1,2,3...) page numbering
+\pagenumbering{arabic}
+
+% Set double spacing for the text
+\doublespacing
+
+\tableofcontents
+
+\chapter{Introduction}
+  \begin{itemize}
+    \item Even before www, we frequently ask our friends to recommend/review
+something we are interested in.
+    \item The web has enabled collecting opinions and experiences from a vast
+pool of people.
+    \item From the surveys \citet{comScore2007}, \citet{Horrigan2008}:
+      \begin{itemize}
+        \item 81\% of Internet users (60\% of Americans) have done online 
+research on a product at least once;
+        \item 20\% (15\% of all Americans) do so on a typical day;
+        \item Among readers of online reviews of retaurants, hotels, and various
+services (e.g., travel agencies or doctors), between 73\% and 87\% report
+that reviews had a significant influence on their purchases;
+        \item Consumers report being willing to pay from 20\% to 99\% more for
+a 5-star-rated item than a 4-star-rated item (the variance stems from what
+type of item or service is considered);
+        \item 32\% have provided a rating on a product, service, or person via
+an online rating system, and 30\% (including 18\% of online senior citizens) 
+have posted an online comment or review ragarding a product or service.
+      \end{itemize}
+    \item A demand for political inforamtion, Rainie and Horrigan
+\citet{Rainie2007} studied the 31\% of Americans - over 60 million people that
+were 2006 capaign internet users:  
+      \begin{itemize}
+        \item 28\% said that a major reason for these online activities was to
+get perspectives from within their community;
+        \item 34\% said that a major reason was to get perspectives from
+outside their community;
+        \item 27\% had looked online for the endorsements or ratings of
+external organizations;
+      \end{itemize}
+
+    \item For industry, analysts notes:
+\citet{ForrestWave2006}:
+      \begin{itemize}
+        \item 75,000 new blogs are created daily;
+        \item 1.2 million new posts each day
+      \end{itemize}
+       Hence businesses require a new tool to replace traditional methods in
+order to keep track of consumer opinions
+  \end{itemize}
+
+\chapter{Applications}
+  \begin{itemize}
+    \section{Applications to review-related websites}
+      \item A review-oriented search engine
+      \item An automated review and opinion-aggregation machine.
+      \item Summarizing user reviews
+      \item Recommendation system
+    \section{Applications as a sub-component technology}
+      \item Suggesting relevant ads (if an article has positive polarity about
+an  item/server, advertisers can put ads about the item/service, otherwise put
+ads  about its competitors).
+      \item Opinion-oriented questions may require different treatment.
+    \section{Applications in businesss and government intelligence}
+      \item Reputation management and public relationship
+      \item Trend prediction
+    \section{Applications across different domains}
+      \item In politics, understanding what voters are thinking - clarification
+of politicians' positions, such as what public figures support or oppose, to
+enhance the quality of information that voters have accesss to.      
+      \item Automatic analysis of the opinions that people submit about pending
+policy or government-regulation proposals \citet{Cynthia2006}, \citet{Kwon2006}.
+  \end{itemize}
+
+\chapter{Challenges}
+
+  \begin{itemize}
+    \item Consider the following sentence from Mark Twain: ``Jane Austen's books
+madden me so that I can't conceal my frenzy from reader''. Regular lexicon
+methods can't help in this case because ``madden'' and ``frenzy'' suggests
+negative sentiment, while the whole sentiment should be positive. In order to
+solve the problem of sentiment analysis completely, it is necessary to consider
+the whole context in an article rather than purely key words.
+    \item Lets consider another example from \citet{Liu2010}:
+      \begin{quote}
+        ``(1) I bought an iPhone 2 days ago. (2) It was such a nice
+phone. (3) The touch screen was really cool. (4) The voice quality was clear
+too. (5) However, my mother was mad with me as I did not tell her before I
+bought it. (6) She also thought the phone was too expensive, and wanted me to
+return it to the shop...''
+      \end{quote}
+      There are several different opinions here. The sentence (2) expresses
+a positive sentiment about the iphone as general. The sentences (3) and
+(4) also express positive opinions but about the phone's screen and voice
+quality. The sentence (5) and (6) express negative opinions of the author's
+mother on the author and the phone's price. As we can see, sentiment detection
+is more complicating as in order to detect the opinions of the author on iphone,
+in each phrase which contains opinions, we need to detect if the opinion holder
+is the author himself and if he is talking about either the iphone or its
+features. Therefore the problem of sentiment detection potentially contains
+difficult subproblems which are entity detection, feature extraction
+and subjectivity and objectivity classification of opinions.
+  \end{itemize}
+
+  \section{Named Entity Recognition (NER)}
+    This is a hard problem that has been investigated widely by researchers
+around the world. State-of-the-art NER systems for English produce near-human
+performance \citet{Wikipedia_NER}. The best systen entering MUC-7 scored 93.39\%
+of f-measure while human annotator scored 97.60\% and 96.95\% \citet{Marsh1998}.
+However most of NER systems work well in some specific domains and need to be
+retrained for other domains.
+
+    This problem also contains the problems of feature extraction and synonym
+grouping as they are just relationships of detected entities
+\cite{WebKnox2011}. This part of the problem has remained a major challenge
+even though there are many attempts to solve it.
+
+%   \section{Subjectivity and Objectivity classification}
+%     Consider a simple context:
+%     \begin{quote}
+%       Even though it is said iPhone 4 is brittle, I still like it and
+% have just bought one for my own.
+%     \end{quote}
+%     Then simple sentence includes two phrases: the first phrase tells a
+% fact that iPhone 4 is easy to break and the second phrase expresses the
+% author's
+% own sentiment about the phone. Even though the first phrase implies a
+% negative sentiment, it is a objective fact and should not 
+
+  \section{Opinion orientation classification}
+    This is the scope where this theis attempts to solve by assuming 
+entity identifications in contexts are given (using available NER systems or
+manual annotations). 
+    \begin{itemize}
+      \item This most popular approach to this problem is to use opinion words
+such as \textit{good}, \textit{bad}, \textit{poor}, \textit{brilliant} to
+predict the sentiment in the context. However this approach is brittle because
+we need different sets of opinion words for different domain for it to work
+efficiently. \citet{Liu2010} gives an example about a phone battery: ``The
+battery is long'', and its camera: ``This camera takes a long time to focus''.
+Even though the word ``long'' is used in both sentences, the former implies a
+positive sentiment while the latter implies a negative sentiment.
+
+      \item Another the problem with this approach is that it is not easy to
+build a lexicon that works efficiently. There are unlimited number of
+expressions that people use to express opinions. \citet{Pang2002} show that
+there are words that we might not think they indicate any sentiment but they
+appears more frequently in a certain class, i.e ``still'' surprisingly mainly
+appears in posstive class.
+
+      \item We also need to build different lexicons for different domains
+because a bag of words in this domain is postive but can be negative in another
+domain. For example ``go read the book'' most likely indicates positive
+sentiment for book reviews, but negative sentiment for movie reviews.
+
+    \end{itemize}
+
+  \section{Sentiment summarization}
+
+\chapter{Formalisation}
+      \begin{figure}[H]
+        \begin{center}
+          \includegraphics[scale=0.8]{IndividualSentiment}
+        \end{center}
+      \end{figure}
+    
+\chapter{The approaches}
+
+  \section{Sentence/phrase-level sentiment analysis}
+
+    \subsection{Lexicon based}
+      
+        A typical approach to sentiment analysis is to use a lexicon of positive
+  and negative words and phrases to identify the overall sentiment in a sentence
+  or an article. 
+
+        \subsubsection{Unsupervised approaches}
+          \begin{itemize}
+              \item \citet{Wiebe2000}, \citet{Turney2002}, \citet{Pan2010} built
+a  lexicon using some function based on positive, negative polarity or
+subjectivity  with in it.
+              \item \citet{Liu98} use combination of this method and
+  the sentiment polarity of the previous sentence if the scoring function does
+not
+  indicate a deterministic classification of a given sentence.
+              \item \citet{Hatzivassiloglou1997}
+  use a semi-supervised method to build such a lexicon. Their idea is to
+classify
+  words by searching for their relationship by looking at conjunctions such as
+  ``elegant but over-priced'', or ``clever and informative''. In
+  \citet{Hatzivassiloglou1997}, after clustering, they simply assign the highest
+  average frequency cluster as ``positive cluster''. The classificaiton
+precision
+  is more than 90\%. In some other work, some \textit{seed words} which are
+known
+  as possitive or negative are used to predict sentiment orientation of other
+  words in same clusters or using Wordnet-defined relations.      		
+          \end{itemize}
+      
+        \subsubsection{Semi-supervised approaches}
+          The idea is to use the output of an initial simple classifier to feed
+  labeled data into a supervised trainer. The trained models learn
+  certain patterns from the input data and hence can classify a wider set of
+  inputs.
+          \begin{itemize}
+            \item \cite{Riloff2003} use an initial classifier to learn patterns
+  of subjective expressions (an interesting example is the noun ``fact'', as in
+  ``The fact is...'', exhibits high correlation with subjectivity.
+            \item \cite{Kaji2006} use a similar method to learn patterns of HTML
+  documents with polarity labels.
+            \item Similar work can be found at
+  \cite{Wiebea2005}, \cite{Riloff2003a}.
+          \end{itemize}
+
+        \subsubsection{Supervised approaches}
+          \begin{itemize}
+              \item However lexicon based approaches are not that trivial.
+  \citet{Pang2002} built a lexicon applying machine learning techniques based on
+  unigram models that can achieve over 80\% in accuracy.
+          \end{itemize}
+
+        A comparison of supervised and unsupervised methods can be found in
+  \cite{Chaovalit2005}.
+
+  \section{Sentiment summarization}
+    \subsection{Supervised approaches}
+        \begin{itemize}
+            \item Beineke et al. \citet{Beineke2004} try to detect
+the summary quotation of the sentiment in a review
+from \url{www.rottentomatoes.com}. They experimented on two learning methods
+e.g. Naive Bayes and Regularized Logistic Regression to detect the summary
+quotation basing on some information like the length and location of sentences,
+dictionary words in the sentences and some other combinations. However the
+result is not good and the correct percentages of both methods are around or
+lower than 25\%. It does not take into account that the sentiment in a review is
+expressed in not only one sentence.         
+  `     \end{itemize}   
+
+    \subsection{Classification based  on relationship information}
+      \subsubsection{Relationsips between discourse participants}
+        \begin{itemize}
+          \item \cite{Agrawal2003} observe on manual examination of 100
+responses in newsgroup that the relationship between two individuals in the
+``responded-to'' network is more likely to be antagonistic. Assuming
+``respond-to'' links imply disagreement, they effectively classify users into
+opposite camps via graph partitioning, outperforming methods that depend solely
+on the textual information within a particular document.
+        \end{itemize}
+
+      \subsubsection{Relationships between product features}
+        \begin{itemize}
+          \item \cite{Snyder2007} utilize agreement information in a task where
+one must predict ratings for multiple asects of the same item. They then
+construct a linear classifier to predict whether all aspects of a product are
+given the same rating, and combine this prediction with that of
+individual-aspect classifers so as to minimize a certain loss function.
+\cite{Snyder2007}
+        \end{itemize}
+
+
+  \section{Multi-classes classification}
+    \subsection{Relationships between classes}
+      \begin{itemize}
+        \item Standard multi-class categorization focuses on capturing the
+distinct features present in each class, and ignore the fact that ``5 stars'' is
+much more like ``4 stars'' than ``2 stars''. \cite{Pang2005} observe that
+one-vs-all multi-class categorization scheme can outperform regression for a
+three-class classification problem (positive, neutral, and negative), perhaps
+due to each class exhibiting a sufficently distinct vocabulary, but for more
+fine-grained classification, regression emerges as the better of the two.
+        \item \cite{Pang2005} formulate rating inference as a metric label
+problem (\cite{Kleinberg2002}), so that a natural notion of distance between
+classes (``2 stars'' and ``3 stars'' are more similar to each other than ``1
+star'' and ``4 stars'' are) is captured explicitly. More specifically, an
+optimal labeling is computed that balacnes the output of classifier that
+considers items in isolation with the importance of assign similar lables to
+similar items.
+      \end{itemize}
+
+\chapter{Conclusion}
+
+\bibliographystyle{plainnat}
+\bibliography{library}
+\end{document}
+
