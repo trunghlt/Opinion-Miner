@@ -6,7 +6,6 @@ Author  : Trung Huynh
 """
 from Queue import Queue
 from threading import Thread
-from semetric.util.logging import CommentTimerLog
 
 
 class Worker(Thread):
@@ -115,6 +114,4 @@ class InitializeTask(Task):
 if __name__ == "__main__":
     distributor = ThreadDistributor(20)
     distributor.add_task(InitializeTask())
-    timer = CommentTimerLog("ThreadDistributor", incremental_print=True) 
-    timer.append("Marathon")
     distributor.run()

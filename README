@@ -1,1 +1,5 @@
-hello world 2
+Required packages:
+==================
+
+python-dateutil: 
+    sudo apt-get install python-dateutil

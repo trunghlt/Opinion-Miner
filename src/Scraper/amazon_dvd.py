@@ -7,7 +7,6 @@ import demjson
 import lxml.html 
 import time
 from dateutil.parser import parse
-from semetric.util.scraper import ScraperLogMessage, Scraper, ScraperDownloadError
 from ThreadDistributor import ThreadDistributor, Task
 
 def download(url, max_retries=5):    
