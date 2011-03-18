@@ -60,7 +60,7 @@ class ReviewScrapeTask(Task):
                 rate = -1
                 
             try:
-                title = div.cssselect("b")[0].text
+                title = div.cssselect("b")[0].text or ""
             except Exception, e:
                 title = ""
             
@@ -105,11 +105,11 @@ class SearchTask(Task):
                     for e in doms.cssselect(".result"): 
                         found = True
                     
-                        try:    code = e.get("name").split("_")[0]
-                        except: code = None
+                        try:    code = e.get("name").split("_")[0] or ""
+                        except: code = ""
                     
-                        try:    name = e.cssselect("a.title")[0].text
-                        except: name = None
+                        try:    name = e.cssselect("a.title")[0].text or ""
+                        except: name = ""
                         
                         self.distributor.add_task(ReviewScrapeTask(), {\
                             "name": name, \
