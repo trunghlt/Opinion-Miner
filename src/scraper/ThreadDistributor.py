@@ -5,7 +5,7 @@ Author  : Trung Huynh
 
 """
 from Queue import Queue
-from threading import Thread
+from threading import Thread, Lock
 
 
 class Worker(Thread):
@@ -19,11 +19,18 @@ class Worker(Thread):
     def run(self):
         for task in iter(self.distributor.inp_queue.get, "STOP"):
             task.worker = self
+            
+            self.distributor.lock.acquire()
             self.distributor.working += 1
+            self.distributor.lock.release()
+            
             for result in task.run():
                 if result is not None:
                     self.distributor.out_queue.put(result)
+                    
+            self.distributor.lock.acquire()
             self.distributor.working -= 1
+            self.distributor.lock.release()
             
             # Stop if no worker is working and queue is empty. It is 
             # reasonable because no new task can be generated at this point.
@@ -63,6 +70,7 @@ class ThreadDistributor:
         self.n_workers = n_workers
         self.workers = []
         self.working = 0
+        self.lock = Lock()
         for i in xrange(n_workers):
             self.add_worker()
         
@@ -105,13 +113,16 @@ class ComputationTask(Task):
 class InitializeTask(Task):
     
     def run(self):
-        for i in xrange(1000000):     
+        for i in xrange(1000):     
             self.distributor.add_task(ComputationTask(), i)
-        self.distributor.stop()
+            
         yield None
-        
+
         
 if __name__ == "__main__":
-    distributor = ThreadDistributor(20)
-    distributor.add_task(InitializeTask())
-    distributor.run()
+    #Test dead lock
+    for i in xrange(10000): 
+        print i
+        distributor = ThreadDistributor(20)
+        distributor.add_task(InitializeTask())
+        distributor.run()
