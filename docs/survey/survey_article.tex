@@ -29,14 +29,14 @@
 
 
 \fancyhf{}
-\fancyhead[C]{A Trung Huynh's PhD work - UCL, London}
+\fancyhead[C]{University College of London}
 \pagestyle{fancy}
 
 %\pagenumbering{}
 % Set book title
 \title{\textbf{Opinion Mining Survey}}
 % Include Author name and Copyright holder name
-\author{trunghlt@gmail.com}\date{}
+\author{Trung Huynh - trunghlt@gmail.com}\date{}
 
 \begin{document}
 
@@ -45,6 +45,27 @@
 
 \begin{multicols}{2}
  
+
+\section{Abstract}
+    With the growing availability and popularity 
+of opinion-rich resources such as online review sites and personal blogs, new 
+opportunities and challenges arise as people now can, and do, actively use 
+information technologies to seek out and understand the opinions of others. The 
+sudden eruption of activity in the area of opinion mining and sentiment analysis, 
+which deals with the computational treatment of opinion, sentiment, and 
+subjectivity in text, has thus occurred at least in part as a direct response to 
+the surge of interest in new systems that deal directly with opinions as a 
+first-class object.
+
+This survey covers techniques and approaches that promise to directly enable 
+opinion-oriented information- seeking systems. It includes material on summarization 
+of evaluative text and on broader issues regarding privacy, manipulation, and 
+economic impact that the development of opinion-oriented information-access services 
+gives rise to. To facilitate future work, a discussion of available resources, 
+benchmark datasets, and evaluation campaigns is also provided.
+
+   \textbf{Acknowledgement:} Much of this work is cited from \citet{Pang2008}
+
 \section{Introduction}
     Even before the internet, we frequently ask our friends for recommendation
 or review about stuff we are interested in. The web has enabled collecting 
@@ -75,34 +96,41 @@ the endorsements or ratings of external organizations.
 new posts each day. Therefore businesses require a new tool to replace traditional 
 methods in order to keep track of consumer opinions.
 
-\subsection{Applications}
-    \subsubsection{Applications to review-related websites}
-    \begin{itemize}
-      \item A review-oriented search engine
-      \item An automated review and opinion-aggregation machine.
-      \item Summarizing user reviews
-      \item Recommendation system
-    \end{itemize}
-    \subsubsection{Applications as a sub-component technology}
-    \begin{itemize}
-      \item Suggesting relevant ads (if an article has positive polarity about
-an  item/server, advertisers can put ads about the item/service, otherwise put
-ads  about its competitors).
-      \item Opinion-oriented questions may require different treatment.
-    \end{itemize}
-    \subsubsection{Applications in businesss and government intelligence}
-    \begin{itemize}
-      \item Reputation management and public relationship
-      \item Trend prediction
-    \end{itemize}
-    \subsubsection{Applications across different domains}
-    \begin{itemize}
-      \item In politics, understanding what voters are thinking - clarification
-of politicians' positions, such as what public figures support or oppose, to
-enhance the quality of information that voters have accesss to.      
-      \item Automatic analysis of the opinions that people submit about pending
-policy or government-regulation proposals \citet{Cynthia2006}, \citet{Kwon2006}.
-    \end{itemize}
+    \subsection{Applications to review-related websites}
+      The current search engine can only retrieve documents which contain search
+keywords but can't answer for questions like ``How do people think about 
+ipad 2''. In order to answer for these opion questions there needs a different 
+treatment to analyse sentiment in clause, sentence and document levels. 
+
+      Sentiment analysis can also be used to create an automated review and 
+opinion-aggregation machine. Online customers usually do careful research before 
+buying expensive products. Such an opinion-aggregation machine helps customers
+save time from searching and acknowledges or recommends to them about products 
+with good or bad reviews form others.
+
+    \subsection{Applications as a sub-component technology}
+        Sentiment analysis helps advertisers identify opinion in articles
+and then can push proper ads to readers. If the author is expressing positive
+opinion about a product, advertisers can distribute advertisement about that
+product or related accessories. If the author is expressing negative opinion
+about that product, advertisers can sell advertisement about its competitors.
+The effect of improper advertisement can be very low and counter-productive.
+
+    \subsection{Applications in businesss and government intelligence}
+        Applications in this area include reputation and public 
+relationship management. Companies have bee paying a lot of money for manually 
+ntracking reputation of their products online. Instead, an automated sentiment 
+analysis machine can save them a significant resource. In addition, these data
+can also help with trend prediction and proper reaction for corporates to
+optimise their customer satisfaction.
+
+    \subsection{Applications across different domains}
+      In politics, understanding what voters are thinking - clarification
+of politician positions, such as what public figures support or oppose, 
+enhances the quality of information that voters have accesss to. Automatic 
+analysis of the opinions also helps poloticans with the most updated opinions 
+people submit about pending policy or government-regulation proposals 
+\citet{Cynthia2006}, \citet{Kwon2006}.
 
 \section{Challenges}
     Consider the following sentence from Mark Twain: ``Jane Austen's books
@@ -243,6 +271,11 @@ latent space.
             \cite{Kaji2006} use a similar method to learn patterns of HTML
   documents with polarity labels.
             
+            \citet{Qiu2010} identify relations that link opinion words and targets
+using a dependency parser and then utilise to expand the initial opinion lexicon
+and to extract targets based on bootstrapping (\textbf{double propagation}).
+The results show this approach outperforms these existing methods significantly.
+
             Similar work can be found at \cite{Wiebea2005}, \cite{Riloff2003a}.
 
         \textbf{Supervised approaches}
@@ -275,6 +308,15 @@ new feature weighting methods with Naive Bayes and Support Vector Machine.
 Their methods prove that it is possible to maintain a state-of-the-art
 classification accuracy of 87.15\% while using less than 36\% of the features.
 
+        \citet{Abbasi2007} develop a hybridised genetic algorithm (Entropy
+Weighted Genetic Algorithm - \textbf{EWGA}) that incorporates the information 
+gain heuristic for feature selection. \textbf{EWGA} is designed to improve
+performance and get a better assessment of the key features. The experimental
+results using \textbf{EWGA} with SVM indicate high performance levels, with
+accuracy over 95\% on the benchmark data set and over 93\% for both the U.S.
+and Middle Eastern forums.
+
+
     \subsubsection{Classification based  on relationship information}
       \textbf{Relationsips between discourse participants}
             
@@ -293,6 +335,15 @@ construct a linear classifier to predict whether all aspects of a product are
 given the same rating, and combine this prediction with that of
 individual-aspect classifers so as to minimize a certain loss function.
 \cite{Snyder2007}
+
+        \citet{Ding2009} study the problems of \textit{entity discovery} and
+\textit{entity assignment}. \textit{Entity discovery} is the problem of
+detecting entities explitcitly mentioned in sentences while \textit{Entity
+assignment} is the problem of detecting entity mention by pronouns and language
+conventions. \textit{Entity discovery} is based on pattern discovery and
+\textit{entity assignment} is based on mining of comparative sentences. 
+Experimental results demonstrate the effectiveness on both forum posts and 
+a commercial setting.
         
        \textbf{Sentiment analysis of conditional sentences}
 
