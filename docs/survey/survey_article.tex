@@ -71,22 +71,22 @@ benchmark datasets, and evaluation campaigns is also provided.
 or review about stuff we are interested in. The web has enabled collecting 
 experience and opinions from a vast pool of users. The demand of these 
 information interpretation and summarization has been increasing for both
-invididual customers and corporations.
+individual customers and corporations.
 
     From the surveys \citet{comScore2007}, \citet{Horrigan2008}, 81\% of Internet 
 users (60\% of Americans) have done online research on a product at least once;
 20\% (15\% of all Americans) do so on a typical day; Among readers of online 
-reviews of retaurants, hotels, and various services (e.g., travel agencies or 
+reviews of restaurants, hotels, and various services (e.g., travel agencies or 
 doctors), between 73\% and 87\% report that reviews had a significant influence 
 on their purchases; Consumers report being willing to pay from 20\% to 99\% more for
 a 5-star-rated item than a 4-star-rated item (the variance stems from what
 type of item or service is considered); 32\% have provided a rating on a product, 
 service, or person via an online rating system, and 30\% (including 18\% of 
-online senior citizens) have posted an online comment or review ragarding a 
+online senior citizens) have posted an online comment or review regarding a 
 product or service.
 
-    For political information, Rainie and Horrigan \citet{Rainie2007} studied 
-the 31\% of Americans - over 60 million people that were 2006 capaign internet 
+    For political information, \citet{Rainie2007} studied 
+the 31\% of Americans - over 60 million people that were 2006 campaign internet 
 users: 28\% said that a major reason for these online activities was to
 get perspectives from within their community; 34\% said that a major reason was 
 to get perspectives from outside their community; 27\% had looked online for 
@@ -97,40 +97,40 @@ new posts each day. Therefore businesses require a new tool to replace tradition
 methods in order to keep track of consumer opinions.
 
     \subsection{Applications to review-related websites}
-      The current search engine can only retrieve documents which contain search
+      The current search engine can retrieve documents which contain search
 keywords but can't answer for questions like ``How do people think about 
-ipad 2''. In order to answer for these opion questions there needs a different 
+ipad 2?''. In order to answer for these option questions there needs a different 
 treatment to analyse sentiment in clause, sentence and document levels. 
 
       Sentiment analysis can also be used to create an automated review and 
 opinion-aggregation machine. Online customers usually do careful research before 
 buying expensive products. Such an opinion-aggregation machine helps customers
-save time from searching and acknowledges or recommends to them about products 
+save time from searching and acknowledges or recommends them about products 
 with good or bad reviews form others.
 
     \subsection{Applications as a sub-component technology}
         Sentiment analysis helps advertisers identify opinion in articles
-and then can push proper ads to readers. If the author is expressing positive
+and distribute proper ads to readers. If the author is expressing positive
 opinion about a product, advertisers can distribute advertisement about that
 product or related accessories. If the author is expressing negative opinion
 about that product, advertisers can sell advertisement about its competitors.
 The effect of improper advertisement can be very low and counter-productive.
 
-    \subsection{Applications in businesss and government intelligence}
+    \subsection{Applications in businesses and government intelligence}
         Applications in this area include reputation and public 
-relationship management. Companies have bee paying a lot of money for manually 
-ntracking reputation of their products online. Instead, an automated sentiment 
-analysis machine can save them a significant resource. In addition, these data
+relationship management. Companies have been paying a lot of money for manually 
+tracking reputation of their products online. Instead, an automated sentiment 
+analysis machine can save them a significant amount of resource. In addition, these data
 can also help with trend prediction and proper reaction for corporates to
 optimise their customer satisfaction.
 
     \subsection{Applications across different domains}
       In politics, understanding what voters are thinking - clarification
 of politician positions, such as what public figures support or oppose, 
-enhances the quality of information that voters have accesss to. Automatic 
-analysis of the opinions also helps poloticans with the most updated opinions 
+enhances the quality of information that voters have accesses to. Automatic 
+analysis of the opinions also helps politicians with the most updated opinions 
 people submit about pending policy or government-regulation proposals 
-\citet{Cynthia2006}, \citet{Kwon2006}.
+(\citet{Cynthia2006}, \citet{Kwon2006}).
 
 \section{Challenges}
     Consider the following sentence from Mark Twain: ``Jane Austen's books
@@ -174,8 +174,8 @@ However most of NER systems work well in some specific domains and need to be
 retrained for other domains.
 
     This problem also contains the problems of feature extraction and synonym
-grouping as they are just relationships of detected entities
-\cite{WebKnox2011}. This part of the problem has remained a major challenge
+grouping
+\citet{WebKnox2011}. This part of the problem has remained a major challenge
 even though there are many attempts to solve it.
 
 %   \section{Subjectivity and Objectivity classification}
@@ -191,11 +191,7 @@ even though there are many attempts to solve it.
 % negative sentiment, it is a objective fact and should not 
 
   \subsection{Opinion orientation classification}
-    This is the scope where this theis attempts to solve by assuming 
-entity identifications in contexts are given (using available NER systems or
-manual annotations). 
-    
-    This most popular approach to this problem is to use opinion words
+    The most popular approach to this problem is to use opinion words
 such as \textit{good}, \textit{bad}, \textit{poor}, \textit{brilliant} to
 predict the sentiment in the context. However this approach is brittle because
 we need different sets of opinion words for different domain for it to work
@@ -208,11 +204,11 @@ positive sentiment while the latter implies a negative sentiment.
 build a lexicon that works efficiently. There are unlimited number of
 expressions that people use to express opinions. \citet{Pang2002} show that
 there are words that we might not think they indicate any sentiment but they
-appears more frequently in a certain class, i.e ``still'' surprisingly mainly
-appears in posstive class.
+appear more frequently in a certain class, i.e ``still'' surprisingly mainly
+appears in the positive class.
 
     We also need to build different lexicons for different domains
-because a bag of words in this domain is postive but can be negative in another
+because a bag of words in this domain is positive but can be negative in another
 domain. For example ``go read the book'' most likely indicates positive
 sentiment for book reviews, but negative sentiment for movie reviews.
 
@@ -232,7 +228,7 @@ sentiment for book reviews, but negative sentiment for movie reviews.
         \textbf{Unsupervised approaches}
 
             \citet{Wiebe2000}, \citet{Turney2002}, \citet{Pan2010} built
-a  lexicon using some function based on positive, negative polarity or
+a  lexicon using some function based on positive, negative polarity and
 subjectivity  with in it.
 
             \citet{Liu98} use combination of this method and
@@ -247,9 +243,9 @@ such as ``elegant but over-priced'', or ``clever and informative''. In
 average frequency cluster as ``positive cluster''. The classificaiton
 precision is more than 90\%. In some other work, some \textit{seed words} which are
 known as possitive or negative are used to predict sentiment orientation of other
-words in same clusters or using Wordnet-defined relations.      		
+words in the same clusters or using Wordnet-defined relations.      		
             
-            \citet{Pan2010} propose a spectral feature align (\textbf{SFA}) 
+            \citet{Pan2010} propose a spectral feature aligning (\textbf{SFA}) 
 algorithm to align domain specific words from different domains into unified 
 clusters, with the help of domain-independent words as a bridge. Compared to 
 previous approaches, \textbf{SFA} can discover a robust representation for 
@@ -264,11 +260,11 @@ latent space.
   certain patterns from the input data and hence can classify a wider set of
   inputs.
 
-            \cite{Riloff2003} use an initial classifier to learn patterns
+            \citet{Riloff2003} use an initial classifier to learn patterns
   of subjective expressions (an interesting example is the noun ``fact'', as in
-  ``The fact is...'', exhibits high correlation with subjectivity.
+  ``The fact is...'', exhibits high correlation with subjectivity).
             
-            \cite{Kaji2006} use a similar method to learn patterns of HTML
+            \citet{Kaji2006} use a similar method to learn patterns of HTML
   documents with polarity labels.
             
             \citet{Qiu2010} identify relations that link opinion words and targets
@@ -318,7 +314,7 @@ and Middle Eastern forums.
 
 
     \subsubsection{Classification based  on relationship information}
-      \textbf{Relationsips between discourse participants}
+      \textbf{Relationships between discourse participants}
             
         \citet{Agrawal2003} observe on manual examination of 100
 responses in newsgroup that the relationship between two individuals in the
@@ -330,15 +326,15 @@ on the textual information within a particular document.
       \textbf{Relationships between product features}
           
         \citet{Snyder2007} utilize agreement information in a task where
-one must predict ratings for multiple asects of the same item. They then
+one must predict ratings for multiple aspects of the same item. They then
 construct a linear classifier to predict whether all aspects of a product are
 given the same rating, and combine this prediction with that of
-individual-aspect classifers so as to minimize a certain loss function.
+individual-aspect classifiers so as to minimize a certain loss function.
 \cite{Snyder2007}
 
         \citet{Ding2009} study the problems of \textit{entity discovery} and
 \textit{entity assignment}. \textit{Entity discovery} is the problem of
-detecting entities explitcitly mentioned in sentences while \textit{Entity
+detecting entities explicitly mentioned in sentences while \textit{Entity
 assignment} is the problem of detecting entity mention by pronouns and language
 conventions. \textit{Entity discovery} is based on pattern discovery and
 \textit{entity assignment} is based on mining of comparative sentences. 
@@ -349,7 +345,7 @@ a commercial setting.
 
         \citet{Narayanan2009} study sentiment analysis of conditional sentences.
 Sentiment in conditional sentences are different from normal sentences and hard
-to determine. For example, in th sentence, \textit{if your Nokia phone is not
+to determine. For example, in the sentence, \textit{if your Nokia phone is not
 good, buy this great Samsung phone}, the author is positive about \textit{
 Samsung phone} but does not express an opinion on \textit{Nokia phone}.
 Conditional sentences can start with also \textit{unless, even if, until, as long
@@ -364,15 +360,15 @@ distinct features present in each class, and ignore the fact that ``5 stars'' is
 much more like ``4 stars'' than ``2 stars''. \cite{Pang2005} observe that
 one-vs-all multi-class categorization scheme can outperform regression for a
 three-class classification problem (positive, neutral, and negative), perhaps
-due to each class exhibiting a sufficently distinct vocabulary, but for more
+due to each class exhibiting a sufficiently distinct vocabulary, but for more
 fine-grained classification, regression emerges as the better of the two.
         
-        \cite{Pang2005} formulate rating inference as a metric label
-problem (\cite{Kleinberg2002}), so that a natural notion of distance between
+        \citet{Pang2005} formulate rating inference as a metric label
+problem (\citet{Kleinberg2002}), so that a natural notion of distance between
 classes (``2 stars'' and ``3 stars'' are more similar to each other than ``1
 star'' and ``4 stars'' are) is captured explicitly. More specifically, an
-optimal labeling is computed that balacnes the output of classifier that
-considers items in isolation with the importance of assign similar lables to
+optimal labelling is computed that balances the output of classifiers that
+considers items in isolation with the importance of assigned similar labels to
 similar items.
 
 \section{Conclusion}
@@ -385,7 +381,7 @@ and attempted. The scope of each of these sub-problems is huge and, thus,
 sentiment analysis still remains a very challenging problem to researchers.
 However I am positive about the future of sentiment analysis as demanded from
 industry and its commercial potential. The availability of online user-generated 
-data also enables statistical approaches and, thus, fosters the research 
+data also enables statistical approaches and, hence, fosters the research 
 of sentiment analysis.
 
 \bibliographystyle{plainnat}
