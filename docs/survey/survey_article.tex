@@ -29,14 +29,14 @@
 
 
 \fancyhf{}
-\fancyhead[C]{A Trung Huynh's PhD work - UCL, London}
+\fancyhead[C]{University College of London}
 \pagestyle{fancy}
 
 %\pagenumbering{}
 % Set book title
 \title{\textbf{Opinion Mining Survey}}
 % Include Author name and Copyright holder name
-\author{trunghlt@gmail.com}\date{}
+\author{Trung Huynh - trunghlt@gmail.com}\date{}
 
 \begin{document}
 
@@ -45,6 +45,27 @@
 
 \begin{multicols}{2}
  
+
+\section{Abstract}
+    With the growing availability and popularity 
+of opinion-rich resources such as online review sites and personal blogs, new 
+opportunities and challenges arise as people now can, and do, actively use 
+information technologies to seek out and understand the opinions of others. The 
+sudden eruption of activity in the area of opinion mining and sentiment analysis, 
+which deals with the computational treatment of opinion, sentiment, and 
+subjectivity in text, has thus occurred at least in part as a direct response to 
+the surge of interest in new systems that deal directly with opinions as a 
+first-class object.
+
+This survey covers techniques and approaches that promise to directly enable 
+opinion-oriented information- seeking systems. It includes material on summarization 
+of evaluative text and on broader issues regarding privacy, manipulation, and 
+economic impact that the development of opinion-oriented information-access services 
+gives rise to. To facilitate future work, a discussion of available resources, 
+benchmark datasets, and evaluation campaigns is also provided.
+
+   \textbf{Acknowledgement:} Much of this work is cited from \citet{Pang2008}
+
 \section{Introduction}
     Even before the internet, we frequently ask our friends for recommendation
 or review about stuff we are interested in. The web has enabled collecting 
@@ -75,34 +96,41 @@ the endorsements or ratings of external organizations.
 new posts each day. Therefore businesses require a new tool to replace traditional 
 methods in order to keep track of consumer opinions.
 
-\subsection{Applications}
-    \subsubsection{Applications to review-related websites}
-    \begin{itemize}
-      \item A review-oriented search engine
-      \item An automated review and opinion-aggregation machine.
-      \item Summarizing user reviews
-      \item Recommendation system
-    \end{itemize}
-    \subsubsection{Applications as a sub-component technology}
-    \begin{itemize}
-      \item Suggesting relevant ads (if an article has positive polarity about
-an  item/server, advertisers can put ads about the item/service, otherwise put
-ads  about its competitors).
-      \item Opinion-oriented questions may require different treatment.
-    \end{itemize}
-    \subsubsection{Applications in businesss and government intelligence}
-    \begin{itemize}
-      \item Reputation management and public relationship
-      \item Trend prediction
-    \end{itemize}
-    \subsubsection{Applications across different domains}
-    \begin{itemize}
-      \item In politics, understanding what voters are thinking - clarification
-of politicians' positions, such as what public figures support or oppose, to
-enhance the quality of information that voters have accesss to.      
-      \item Automatic analysis of the opinions that people submit about pending
-policy or government-regulation proposals \citet{Cynthia2006}, \citet{Kwon2006}.
-    \end{itemize}
+    \subsection{Applications to review-related websites}
+      The current search engine can only retrieve documents which contain search
+keywords but can't answer for questions like ``How do people think about 
+ipad 2''. In order to answer for these opion questions there needs a different 
+treatment to analyse sentiment in clause, sentence and document levels. 
+
+      Sentiment analysis can also be used to create an automated review and 
+opinion-aggregation machine. Online customers usually do careful research before 
+buying expensive products. Such an opinion-aggregation machine helps customers
+save time from searching and acknowledges or recommends to them about products 
+with good or bad reviews form others.
+
+    \subsection{Applications as a sub-component technology}
+        Sentiment analysis helps advertisers identify opinion in articles
+and then can push proper ads to readers. If the author is expressing positive
+opinion about a product, advertisers can distribute advertisement about that
+product or related accessories. If the author is expressing negative opinion
+about that product, advertisers can sell advertisement about its competitors.
+The effect of improper advertisement can be very low and counter-productive.
+
+    \subsection{Applications in businesss and government intelligence}
+        Applications in this area include reputation and public 
+relationship management. Companies have bee paying a lot of money for manually 
+ntracking reputation of their products online. Instead, an automated sentiment 
+analysis machine can save them a significant resource. In addition, these data
+can also help with trend prediction and proper reaction for corporates to
+optimise their customer satisfaction.
+
+    \subsection{Applications across different domains}
+      In politics, understanding what voters are thinking - clarification
+of politician positions, such as what public figures support or oppose, 
+enhances the quality of information that voters have accesss to. Automatic 
+analysis of the opinions also helps poloticans with the most updated opinions 
+people submit about pending policy or government-regulation proposals 
+\citet{Cynthia2006}, \citet{Kwon2006}.
 
 \section{Challenges}
     Consider the following sentence from Mark Twain: ``Jane Austen's books
@@ -202,109 +230,163 @@ sentiment for book reviews, but negative sentiment for movie reviews.
   or an article. 
 
         \textbf{Unsupervised approaches}
-          \begin{itemize}
-              \item \citet{Wiebe2000}, \citet{Turney2002}, \citet{Pan2010} built
+
+            \citet{Wiebe2000}, \citet{Turney2002}, \citet{Pan2010} built
 a  lexicon using some function based on positive, negative polarity or
 subjectivity  with in it.
-              \item \citet{Liu98} use combination of this method and
-  the sentiment polarity of the previous sentence if the scoring function does
-not
-  indicate a deterministic classification of a given sentence.
-              \item \citet{Hatzivassiloglou1997}
-  use a semi-supervised method to build such a lexicon. Their idea is to
-classify
-  words by searching for their relationship by looking at conjunctions such as
-  ``elegant but over-priced'', or ``clever and informative''. In
-  \citet{Hatzivassiloglou1997}, after clustering, they simply assign the highest
-  average frequency cluster as ``positive cluster''. The classificaiton
-precision
-  is more than 90\%. In some other work, some \textit{seed words} which are
-known
-  as possitive or negative are used to predict sentiment orientation of other
-  words in same clusters or using Wordnet-defined relations.      		
-          \end{itemize}
+
+            \citet{Liu98} use combination of this method and
+the sentiment polarity of the previous sentence if the scoring function does
+not indicate a deterministic classification of a given sentence.
+
+            \citet{Hatzivassiloglou1997}
+use a semi-supervised method to build such a lexicon. Their idea is to
+classify words by searching for their relationship by looking at conjunctions 
+such as ``elegant but over-priced'', or ``clever and informative''. In
+\citet{Hatzivassiloglou1997}, after clustering, they simply assign the highest
+average frequency cluster as ``positive cluster''. The classificaiton
+precision is more than 90\%. In some other work, some \textit{seed words} which are
+known as possitive or negative are used to predict sentiment orientation of other
+words in same clusters or using Wordnet-defined relations.      		
+            
+            \citet{Pan2010} propose a spectral feature align (\textbf{SFA}) 
+algorithm to align domain specific words from different domains into unified 
+clusters, with the help of domain-independent words as a bridge. Compared to 
+previous approaches, \textbf{SFA} can discover a robust representation for 
+cross-domain data by fully exploiting the relationship between the domain-specific
+and domain-independent words via simultaneously co-clustering them in a common
+latent space.
       
         \textbf{Semi-supervised approaches}
+
           The idea is to use the output of an initial simple classifier to feed
   labeled data into a supervised trainer. The trained models learn
   certain patterns from the input data and hence can classify a wider set of
   inputs.
-          \begin{itemize}
-            \item \cite{Riloff2003} use an initial classifier to learn patterns
+
+            \cite{Riloff2003} use an initial classifier to learn patterns
   of subjective expressions (an interesting example is the noun ``fact'', as in
   ``The fact is...'', exhibits high correlation with subjectivity.
-            \item \cite{Kaji2006} use a similar method to learn patterns of HTML
+            
+            \cite{Kaji2006} use a similar method to learn patterns of HTML
   documents with polarity labels.
-            \item Similar work can be found at
-  \cite{Wiebea2005}, \cite{Riloff2003a}.
-          \end{itemize}
+            
+            \citet{Qiu2010} identify relations that link opinion words and targets
+using a dependency parser and then utilise to expand the initial opinion lexicon
+and to extract targets based on bootstrapping (\textbf{double propagation}).
+The results show this approach outperforms these existing methods significantly.
+
+            Similar work can be found at \cite{Wiebea2005}, \cite{Riloff2003a}.
 
         \textbf{Supervised approaches}
-          \begin{itemize}
-              \item However lexicon based approaches are not that trivial.
+            
+            However lexicon based approaches are not that trivial.
   \citet{Pang2002} built a lexicon applying machine learning techniques based on
   unigram models that can achieve over 80\% in accuracy.
-          \end{itemize}
 
-        A comparison of supervised and unsupervised methods can be found in
+            A comparison of supervised and unsupervised methods can be found in
   \cite{Chaovalit2005}.
 
   \subsection{Sentiment summarization}
     \subsubsection{Supervised approaches}
-        \begin{itemize}
-            \item Beineke et al. \citet{Beineke2004} try to detect
-the summary quotation of the sentiment in a review
-from \url{www.rottentomatoes.com}. They experimented on two learning methods
-e.g. Naive Bayes and Regularized Logistic Regression to detect the summary
+        \citet{Beineke2004} try to detect the summary quotation of the sentiment 
+in a review from \url{www.rottentomatoes.com}. They experimented on two learning 
+methods e.g. Naive Bayes and Regularized Logistic Regression to detect the summary
 quotation basing on some information like the length and location of sentences,
 dictionary words in the sentences and some other combinations. However the
 result is not good and the correct percentages of both methods are around or
 lower than 25\%. It does not take into account that the sentiment in a review is
 expressed in not only one sentence.         
-  `     \end{itemize}   
+
+        \citet{Martineau2009a} present a technique named \textbf{Delta TF-IDF}
+which is an intuitive general purpose technique to efficiently weight bag of word 
+scores before classification. The authors then use SVM to train their models 
+for and show that their method improve accuracy for three well known data sets.
+
+        \citet{Keefe2006} introduce two new feature selection methods and three
+new feature weighting methods with Naive Bayes and Support Vector Machine.
+Their methods prove that it is possible to maintain a state-of-the-art
+classification accuracy of 87.15\% while using less than 36\% of the features.
+
+        \citet{Abbasi2007} develop a hybridised genetic algorithm (Entropy
+Weighted Genetic Algorithm - \textbf{EWGA}) that incorporates the information 
+gain heuristic for feature selection. \textbf{EWGA} is designed to improve
+performance and get a better assessment of the key features. The experimental
+results using \textbf{EWGA} with SVM indicate high performance levels, with
+accuracy over 95\% on the benchmark data set and over 93\% for both the U.S.
+and Middle Eastern forums.
+
 
     \subsubsection{Classification based  on relationship information}
       \textbf{Relationsips between discourse participants}
-        \begin{itemize}
-          \item \cite{Agrawal2003} observe on manual examination of 100
+            
+        \citet{Agrawal2003} observe on manual examination of 100
 responses in newsgroup that the relationship between two individuals in the
 ``responded-to'' network is more likely to be antagonistic. Assuming
 ``respond-to'' links imply disagreement, they effectively classify users into
 opposite camps via graph partitioning, outperforming methods that depend solely
 on the textual information within a particular document.
-        \end{itemize}
 
       \textbf{Relationships between product features}
-        \begin{itemize}
-          \item \cite{Snyder2007} utilize agreement information in a task where
+          
+        \citet{Snyder2007} utilize agreement information in a task where
 one must predict ratings for multiple asects of the same item. They then
 construct a linear classifier to predict whether all aspects of a product are
 given the same rating, and combine this prediction with that of
 individual-aspect classifers so as to minimize a certain loss function.
 \cite{Snyder2007}
-        \end{itemize}
+
+        \citet{Ding2009} study the problems of \textit{entity discovery} and
+\textit{entity assignment}. \textit{Entity discovery} is the problem of
+detecting entities explitcitly mentioned in sentences while \textit{Entity
+assignment} is the problem of detecting entity mention by pronouns and language
+conventions. \textit{Entity discovery} is based on pattern discovery and
+\textit{entity assignment} is based on mining of comparative sentences. 
+Experimental results demonstrate the effectiveness on both forum posts and 
+a commercial setting.
+        
+       \textbf{Sentiment analysis of conditional sentences}
+
+        \citet{Narayanan2009} study sentiment analysis of conditional sentences.
+Sentiment in conditional sentences are different from normal sentences and hard
+to determine. For example, in th sentence, \textit{if your Nokia phone is not
+good, buy this great Samsung phone}, the author is positive about \textit{
+Samsung phone} but does not express an opinion on \textit{Nokia phone}.
+Conditional sentences can start with also \textit{unless, even if, until, as long
+as, assuming, supposing, in case, only if}. The authors use SVM to train data
+from 5 diverse domains and achieve remarkable results.
 
 
-  \subsection{Multi-classes classification}
+  \subsection{Multi-class classification}
     \subsubsection{Relationships between classes}
-      \begin{itemize}
-        \item Standard multi-class categorization focuses on capturing the
+        Standard multi-class categorization focuses on capturing the
 distinct features present in each class, and ignore the fact that ``5 stars'' is
 much more like ``4 stars'' than ``2 stars''. \cite{Pang2005} observe that
 one-vs-all multi-class categorization scheme can outperform regression for a
 three-class classification problem (positive, neutral, and negative), perhaps
 due to each class exhibiting a sufficently distinct vocabulary, but for more
 fine-grained classification, regression emerges as the better of the two.
-        \item \cite{Pang2005} formulate rating inference as a metric label
+        
+        \cite{Pang2005} formulate rating inference as a metric label
 problem (\cite{Kleinberg2002}), so that a natural notion of distance between
 classes (``2 stars'' and ``3 stars'' are more similar to each other than ``1
 star'' and ``4 stars'' are) is captured explicitly. More specifically, an
 optimal labeling is computed that balacnes the output of classifier that
 considers items in isolation with the importance of assign similar lables to
 similar items.
-      \end{itemize}
 
 \section{Conclusion}
+    Even though an emerge of interest in sentiment analysis have attracted 
+worldwide researchers from both institutions and corporates, a state-of-the-art
+sentiment analysis machine's performance is still far away from what a human can
+do, especially for sophisticated documents which include sarcasm, conditional
+sentences, implications and comparisons. Many sub-problems have been addressed
+and attempted. The scope of each of these sub-problems is huge and, thus, 
+sentiment analysis still remains a very challenging problem to researchers.
+However I am positive about the future of sentiment analysis as demanded from
+industry and its commercial potential. The availability of online user-generated 
+data also enables statistical approaches and, thus, fosters the research 
+of sentiment analysis.
 
 \bibliographystyle{plainnat}
 \bibliography{library}
