@@ -48,9 +48,9 @@ class ReviewScrapeTask(Task):
         except KeyError: return 
 
         self.distributor.add_task(ReviewScrapeTask(), {
-            "name": name, \
-            "code": code, \
-            "page": page + 1 \
+            "name": name, 
+            "code": code, 
+            "page": page + 1 
         }) 
 
         for div in productReviews.cssselect("td > div"):
@@ -72,12 +72,12 @@ class ReviewScrapeTask(Task):
             logging.info("REVIEW dvd: %s, rate: %d, title: %s, content: %s"\
                          % (name, rate, title, content.strip()))
                          
-            self.output.writerow([\
-                rate, \
-                name.encode("utf-8"), \
-                title.encode("utf-8"), \
-                content.strip().encode("utf-8")]\
-            )
+            self.output.writerow([
+                rate, 
+                name.encode("utf-8"), 
+                title.encode("utf-8"), 
+                content.strip().encode("utf-8")
+            ])
         
         yield None       
 
@@ -111,10 +111,10 @@ class SearchTask(Task):
                         try:    name = e.cssselect("a.title")[0].text or ""
                         except: name = ""
                         
-                        self.distributor.add_task(ReviewScrapeTask(), {\
-                            "name": name, \
-                            "code": code, \
-                            "page": 1 \
+                        self.distributor.add_task(ReviewScrapeTask(), {
+                            "name": name, 
+                            "code": code, 
+                            "page": 1 
                         }) 
                         logging.info("SEARCH dvd: %s, code: %s, page: %d" \
                                      % (name, code, page))
