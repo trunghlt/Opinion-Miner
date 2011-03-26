@@ -89,13 +89,14 @@ class ThreadDistributor:
         for t in self.workers: t.start()
         for t in self.workers: t.join()
         
-    def add_task(self, task, data=None):
+    def add_task(self, task_class, data=None):
+        task = task_class()
         task.distributor = self
         task.inp = data
         self.inp_queue.put(task)
         
     def stop(self):
-        self.add_task(ThreadDistributor.StopTask())
+        self.add_task(ThreadDistributor.StopTask)
         for i in xrange(self.n_workers):
             self.inp_queue.put("STOP")
             
@@ -114,15 +115,15 @@ class InitializeTask(Task):
     
     def run(self):
         for i in xrange(1000):     
-            self.distributor.add_task(ComputationTask(), i)
+            self.distributor.add_task(ComputationTask, i)
             
         yield None
 
         
 if __name__ == "__main__":
     #Test dead lock
-    for i in xrange(10000): 
+    for i in xrange(1000): 
         print i
         distributor = ThreadDistributor(20)
-        distributor.add_task(InitializeTask())
+        distributor.add_task(InitializeTask)
         distributor.run()
