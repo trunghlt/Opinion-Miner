@@ -106,8 +106,8 @@ class ReviewScrapeTask(Task):
                 rate,
                 name.encode("utf-8"), 
                 title.encode("utf-8"), 
-                content.strip().encode("utf-8")]
-            )
+                content.strip().encode("utf-8")
+                ])
         
         yield None       
 
