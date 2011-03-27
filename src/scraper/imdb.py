@@ -37,11 +37,12 @@ class ReviewScrapeTask(Task):
                 ),
             zip([link]*len(rates) , [title]*len(rates), rates, review_titles, contents))
             
-        self.distributor.add_task(ReviewScrapeTask, {
-            "link"  : link, 
-            "title" : title,
-            "start" : start + self.REVIEWS_PER_PAGE
-        })
+        if len(rates) >= self.REVIEWS_PER_PAGE:
+            self.distributor.add_task(ReviewScrapeTask, {
+                "link"  : link, 
+                "title" : title,
+                "start" : start + self.REVIEWS_PER_PAGE
+            })
         
         yield None
         
