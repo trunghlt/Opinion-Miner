@@ -4,7 +4,7 @@ import csv
 from download import download
 from ThreadDistributor import ThreadDistributor, Task
 
-N_THREADS = 10
+N_THREADS = 6
 
 
 class ReviewScrapeTask(Task):
