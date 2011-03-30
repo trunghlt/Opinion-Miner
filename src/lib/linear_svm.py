@@ -2,6 +2,7 @@ import csv
 import os
 import logging
 import logging.handlers
+from itertools import izip
 import re
 import MySQLdb
 import socket
@@ -75,29 +76,27 @@ class LinearSVM(object):
     
     @classmethod
     def save_to_db(cls):
-        c = cls.get_db_cursor()
         # skip "w" line
         cls.fm.next()     
         
         fi = csv.reader(open(cls.index_file, "r"), delimiter="\t")
         
         sql_batch = 20
-        sql = "INSERT INTO svm_features (\
-                    id, name, "\
-                    +",".join(cls.labels[:cls.nr_weight])+")\
-               VALUES (%s, %s, "+",".join(["%s"]*cls.nr_weight)+")"
+        sql = "INSERT IGNORE INTO svm_features "\
+              "(id, name, " + ",".join(cls.labels[:cls.nr_weight]) + ")"\
+              "VALUES (%s, %s, "+",".join(["%s"]*cls.nr_weight)+")"
 
         values = []
-        for weights, index_name_pair in zip(cls.fm, fi):
+        for weights, index_name_pair in izip(cls.fm, fi):
             index, name = index_name_pair
             value = [index, name]
             value.extend(weights[:cls.nr_weight])
             values.append(tuple(value))
             if len(values) >= sql_batch:
-                c.executemany(sql, values)
+                cls.cursor.executemany(sql, values)
                 values = []
                 
-        if len(values) > 0: c.executemany(sql, values)
+        if len(values) > 0: cls.cursor.executemany(sql, values)
             
     
     @classmethod
@@ -146,9 +145,9 @@ if __name__ == "__main__":
     parser.add_argument("--db", dest="db", default=None)                        
     LinearSVM.args = parser.parse_args()
     LinearSVM.init(LinearSVM.args.config)        
-    LinearSVM.db_connect(\
-        Liblinear.args.host,\
-        Liblinear.args.user,\
-        Liblinear.args.passwd,\
-        Liblinear.args.db\
+    LinearSVM.db_connect(
+        LinearSVM.args.host,
+        LinearSVM.args.user,
+        LinearSVM.args.passwd,
+        LinearSVM.args.db
     )
