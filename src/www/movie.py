@@ -5,12 +5,12 @@ import tornado.httpserver
 
 
 class Application(tornado.web.Application):
-    def __int__(self):
+    def __init__(self):
         handlers = [
             (r"/", HomeHandler)
         ]
         settings = dict(
-            template_path=os.path.joins(os.path.dirname(__file__), "template"),
+            template_path=os.path.join(os.path.dirname(__file__), "template"),
             static_path=os.path.join(os.path.dirname(__file__), "static")
         )
         tornado.web.Application.__init__(self, handlers, **settings)
