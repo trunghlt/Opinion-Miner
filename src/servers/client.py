@@ -61,17 +61,17 @@ class Confidence:
     #NNP confidence score in the 3 class space - negative, neutral, possitive
     def nnp(self):
         class_max, score_max = self.sorted_scores[0]
-        if (class_max in set([4,5])):
-            return self.norm(\
-                score_max / max(map(lambda i: self.score_map[i], [1, 2, 3])) \
+        if (class_max in set(["4","5"])):
+            return self.norm(
+                score_max / max(map(lambda i: self.score_map[i], ["1", "2", "3"])) 
             )
-        elif (class_max in set([1,2])):
-            return self.norm(\
-                score_max / max(map(lambda i: self.score_map[i], [3, 4, 5]))\
+        elif (class_max in set(["1","2"])):
+            return self.norm(
+                score_max / max(map(lambda i: self.score_map[i], ["3", "4", "5"]))
             )
         else:
-            return self.norm(\
-                score_max / max(map(lambda i: self.score_map[i], [1, 2, 4, 5]))\
+            return self.norm(
+                score_max / max(map(lambda i: self.score_map[i], ["1", "2", "4", "5"]))
             )    
             
             
@@ -110,14 +110,16 @@ class Client(object):
             self.port = int(cfg.get("socket", "port"))
             self.timeout = int(cfg.get("socket", "timeout"))
             self.tries = int(cfg.get("socket", "max_tries"))
+            self.feature_weights = int(cfg.get("output", "feature_weights"))
+            self.class_weights = int(cfg.get("output", "class_weights"))
     
         if host: self.host = host
         if port: self.port = port
         if timeout: self.timeout = timeout
         if tries: self.tries = tries
                 
-    def score(self, review, \
-                    return_confidence=True, \
+    def score(self, review, 
+                    return_confidence=False, 
                     confidence_type=Confidence.LOCAL):
         """Return sentiment information of review
         
@@ -172,20 +174,20 @@ class Client(object):
         data = demjson.decode(data_str)
         
         # convert class weights from decimal to float if available
-        if data.has_key("class_weights"):
-            data["class_weights"] = decimal2float_dict(data["class_weights"])
+        if data.has_key("weights"):
+            data["weights"] = decimal2float_dict(data["weights"])
             
         # convert feature weights from decial to float if available
-        if data.has_key("feature_weights"):
-            for f in data["feature_weights"]: 
-                f["feature_weights"] = decimal2float_dict(f["feature_weights"])
+        if data.has_key("features"):
+            for f in data["features"]: 
+                f["weights"] = decimal2float_dict(f["weights"])
                 
         # return confidence score if required
         if return_confidence:
-            if not data.has_key("class_weights"):
-                raise Exception("The sentiment server does not return class "+\
+            if not data.has_key("weights"):
+                raise Exception("The sentiment server does not return class "
                                 "weights for confidence scoring")
-            cfd = Confidence(data["class_weights"])
+            cfd = Confidence(data["weights"])
             data["confidence"] = cfd.val(confidence_type)
             
         return data

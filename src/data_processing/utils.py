@@ -17,7 +17,7 @@
 """A util module for text processing
 
 """
-def erase(sub, string, char=" "):
+def erase(sub, string, char="_"):
     """Find ``sub`` and replace them by a string including only ``char`` with 
     same length as ``sub`` in ``string``.
     
@@ -26,12 +26,4 @@ def erase(sub, string, char=" "):
 
     """
     return string.replace(sub, char*len(sub))
-    
-    
-class Amazon:
 
-    @staticmethod
-    def extract_movie_title(title):
-        """Extract real movie title from product
-        
-        """

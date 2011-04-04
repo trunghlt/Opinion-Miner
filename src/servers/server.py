@@ -90,12 +90,10 @@ class MyTCPHandler(SocketServer.BaseRequestHandler):
             logger.debug("Server is terminating...")            
             self.server.terminate()
             self.request.send("0")
-
         else:            
-            predicted_class = LinearSVM.predict(self.data)
-            result = {"score": predicted_class}
+            result = LinearSVM.predict(self.data)
             self.request.send(demjson.encode(result, encoding="utf-8"))
-            logger.debug("%s: %s" % (self.data, predicted_class))
+            logger.debug("%s: %s" % (self.data, result["score"]))
             
 #---------------------------------------------------------------------------------
 class MyTCPServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):

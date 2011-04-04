@@ -8,3 +8,7 @@ TWITTER = {
     "search_url"        : "http://search.twitter.com/search.json?"
                           "q=%(q)s&rpp=%(rpp)d&since_id=%(since_id)d&lang=%(lang)s",
 }
+
+SENTIMENT = dict (
+    config	= "../servers/server.cfg"
+)

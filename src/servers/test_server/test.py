@@ -66,7 +66,7 @@ class MyThread(Thread):
             
             if not return_confidence or svm["confidence"] > confidence_threshold:
                 self.total[real_sent] += 1
-                self.cm[real_sent][svm["score"]] += 1
+                self.cm[real_sent][int(svm["score"])] += 1
             
             if id % 1000 == 0: print id
             
