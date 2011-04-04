@@ -2,7 +2,7 @@ import logging
 import lxml.html
 import csv
 from download import download
-from ThreadDistributor import ThreadDistributor, Task
+from thread_distributor import ThreadDistributor, Task
 
 N_THREADS = 6
 

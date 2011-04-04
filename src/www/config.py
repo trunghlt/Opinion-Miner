@@ -12,3 +12,7 @@ TWITTER = {
 SENTIMENT = dict (
     config	= "../servers/server.cfg"
 )
+
+MEMCACHE = dict(
+    address = "127.0.0.1:11212",
+)

@@ -14,7 +14,7 @@ import demjson
 import lxml.html 
 import time
 from dateutil.parser import parse
-from ThreadDistributor import ThreadDistributor, Task
+from thread_distributor import ThreadDistributor, Task
 
 # Disabled archiving
 ARCHIVE_ENABLED = False
