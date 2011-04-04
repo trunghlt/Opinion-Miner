@@ -37,15 +37,22 @@ class Vectorizer():
         
         
     @classmethod
-    def get_ngrams(cls, review, ngram=1):
-        tokens = cls.regex.findall(review.lower())
-        features = set()
+    def get_ngrams(cls, review, ngram=1, with_pos=False, union=True):
+        tokens = []
+        for t in cls.regex.finditer(review.lower()):
+            tokens.append(t)
+            
+        starts, ends, features = [], [], []
         for i in xrange(len(tokens)):
             for j in xrange(ngram):
                 if i + j < len(tokens):
-                    f = " ".join(tokens[i:i+j+1])
-                    features.add(f)
-        return list(features)
+                    f = " ".join(map(lambda t: t.group(0), tokens[i:i+j+1]))
+                    if not union or not f in features:
+                        features.append(f)
+                        starts.append(tokens[i].start())
+                        ends.append(tokens[i+j].end())
+                    
+        return features, starts, ends if with_pos else features
         
 
     def run(self, inpYielder):

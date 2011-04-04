@@ -1,12 +1,32 @@
-<html>
-   <head>
-      <title>{{ title }}</title>
-   </head>
-   <body>
-     <ul>
-       {% for item in items %}
-         <li>{{ escape(item) }}</li>
-       {% end %}
-     </ul>
-   </body>
-</html>
+{% extends "base.html" %}
+
+{% block header %}
+    <h1>Top Hot Movies</h1>
+    <span id="introduction">As a part of <a href="http://www.trungh.com/" target="_blank">Trung Huynh's</a> PhD work</span>
+{% end %}
+
+{% block main %}
+    <ul id="texts">
+    {% for item in items %}
+     <li>
+        <span class="sentiment">{{ item["sentiment"] }}</span>
+        <img class="profile" src="{{ item['profile_image_url'] }}"/>
+        <span class="status">{{ item["text"] }}</span>
+     </li>
+    {% end %}
+    </ul>
+{% end %}
+
+{% block footer %}
+<script>
+function update() {
+    $.get("/update/{{ q }}", function(html) {
+        $("#texts").append(html);
+    });
+}
+
+$(document).ready(function(){
+    setInterval("update()", 5000);
+});
+</script>
+{% end %}
