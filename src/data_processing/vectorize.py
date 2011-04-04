@@ -10,7 +10,7 @@ STD_REGEX = re.compile("[a-zA-Z0-9]{2,}")
 class Vectorizer():
     regex = STD_REGEX
 
-    def __init__(self, desc, corpus, cat, ngram=3, limit=None, nclasses=5, \
+    def __init__(self, desc, corpus, cat, ngram=3, limit=None, nclasses=5,
                        tail="", lower = True, regex = STD_REGEX):
         self.desc = desc
         self.dir = cat                       
@@ -61,9 +61,9 @@ class Vectorizer():
             
             id_feature_pairs = sorted(map(lambda f: (self.index[f], f), features))
             
-            output = "%d %s" % (\
-                score, \
-                " ".join(map(lambda p: str(p[0])+":1", id_feature_pairs))\
+            output = "%d %s" % (
+                score, 
+                " ".join(map(lambda p: str(p[0])+":1", id_feature_pairs))
             )
             
             self.count[score] += 1
@@ -76,7 +76,7 @@ class Vectorizer():
                         
                 self.ftrain.write(output + "\n")
             else:
-                self.testing_count[c] += 1
+                self.testing_count[score] += 1
                 self.ftest.write(output + "\n")
             
         self.ftrain.close()
