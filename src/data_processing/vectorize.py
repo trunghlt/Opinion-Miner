@@ -51,8 +51,11 @@ class Vectorizer():
                         features.append(f)
                         starts.append(tokens[i].start())
                         ends.append(tokens[i+j].end())
-                    
-        return features, starts, ends if with_pos else features
+        
+        if with_pos:
+            return features, starts, ends  
+        else:
+            return features
         
 
     def run(self, inpYielder):

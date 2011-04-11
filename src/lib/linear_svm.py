@@ -84,7 +84,7 @@ class LinearSVM(object):
         #right condition is:
         #if(nr_class==2 && model_->param.solver_type != MCSVM_CS)
         
-        cls.labels = map(lambda l: "class_"+l, cls.fm.next()[1:])
+        cls.labels = map(lambda l: "class_"+l if l != "-1" else "negative", cls.fm.next()[1:])
         cls.nr_feature = int(cls.fm.next()[-1])
         cls.bias = cls.fm.next()[-1]
         cls.lock = Lock()
@@ -117,23 +117,22 @@ class LinearSVM(object):
     
     @classmethod
     def db_connect(cls, host, user, passwd, db):
-        db = MySQLdb.connect(host, user, passwd, db)
-        cls.cursor = db.cursor()
+        cls.db = MySQLdb.connect(host, user, passwd, db)
+        cls.cursor = cls.db.cursor()
         
     @classmethod
     def vectorize(cls, review):
         names = Vectorizer.get_ngrams(review, cls.ngram)
         sql = "SELECT name," + ",".join(cls.labels[:cls.nr_weight]) + "\
                FROM svm_features\
-               WHERE name='%s'"
+               WHERE name=%s"
         vector = {}
+        cursor = cls.db.cursor()
         for name in names:
-            cls.lock.acquire()
-            cls.cursor.execute(sql % name)
-            f = cls.cursor.fetchone()
-            cls.lock.release()
-            
+            cursor.execute(sql, name)
+            f = cursor.fetchone()
             if f is not None: vector[f[0]] = f[1:]
+            
         return vector
         
     @classmethod
@@ -143,14 +142,17 @@ class LinearSVM(object):
             for i in xrange(len(w)):
                 dec_values[i] += w[i]
         if cls.nr_class == 2:
-            return cls.labels[0] if dec_values[0] > 0 else cls.labels[1]
+            lbl = cls.labels[0] if dec_values[0] > 0 else cls.labels[1]
         else:
-            return cls.labels[dec_values.index(max(dec_values))]
+            lbl = cls.labels[dec_values.index(max(dec_values))]
         
+        return lbl
         
     @classmethod
     def predict(cls, review):
-        return cls.predict_vector(cls.vectorize(review)).split("_")[-1]
+        return dict(
+            score = cls.predict_vector(cls.vectorize(review)).split("_")[-1]
+        )
     
 if __name__ == "__main__":
     parser = ArgumentParser(description="Linear SVM Model")

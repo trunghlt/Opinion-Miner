@@ -91,6 +91,7 @@ class MyTCPHandler(SocketServer.BaseRequestHandler):
             self.server.terminate()
             self.request.send("0")
         else:            
+            LinearSVM.db_connect(args.host, args.user, args.passwd, args.db)
             result = LinearSVM.predict(self.data)
             self.request.send(demjson.encode(result, encoding="utf-8"))
             logger.debug("%s: %s" % (self.data, result["score"]))
@@ -108,7 +109,6 @@ def predictor():
 
     print "Loading svm model..."
     LinearSVM.init(args.config)
-    LinearSVM.db_connect(args.host, args.user, args.passwd, args.db)
 
     server = MyTCPServer((HOST, PORT), MyTCPHandler)
     print "Server started. Listening for reviews..."

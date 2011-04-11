@@ -8,11 +8,13 @@ import config
 import credential
 import demjson
 import memcache
+import lxml.html
 from servers.client import Client, Confidence
 from tornado.options import define, options
+import tornado.database
 
 SAClient = Client(config=config.SENTIMENT["config"], enable_timer=False)
-Mem = memcache.Client([config.MEMCAHCE["address"]], debug=0)
+Mem = memcache.Client([config.MEMCACHE["address"]], debug=0)
 
 define("port", default=8888, help="run on the given port", type=int)
 define("mysql_host", default=credential.DB["host"], help="database host")
@@ -36,13 +38,23 @@ def retrieve_items(q, rpp=5, since_id=0):
             filtered_items.append(item)
 
     return filtered_items
+    
+    
+def parse_settings(db):
+    key_value_pairs = db.query("SELECT * FROM settings");
+    settings = {}
+    for p in key_value_pairs:
+        settings[p.key] = p.value
+        
+    return settings
 
 
 class Application(tornado.web.Application):
     def __init__(self):
         handlers = [
+            (r"/", IndexHandler),
             (r"/update/([^/]+)", UpdateHandler),
-            (r"/([^/]+)", HomeHandler),
+            (r"/([^/]+)", SearchHandler),
         ]
         settings = dict(
             template_path=os.path.join(os.path.dirname(__file__), "template"),
@@ -52,6 +64,12 @@ class Application(tornado.web.Application):
         Twitter.init(config.TWITTER)
         
         tornado.web.Application.__init__(self, handlers, **settings)
+        
+        self.db = tornado.database.Connection(
+            host=options.mysql_host, database=options.mysql_database,
+            user=options.mysql_user, password=options.mysql_password)       
+            
+        self.settings.update(parse_settings(self.db)) 
 
 
 class BaseHandler(tornado.web.RequestHandler):
@@ -60,11 +78,37 @@ class BaseHandler(tornado.web.RequestHandler):
         return self.application.db        
 
 
-class HomeHandler(BaseHandler):
+class IndexHandler(BaseHandler):
+    
+    def get(self):
+        self.title = "Top hot movies"
+        self.render(
+            "index.html", 
+            title=self.title, 
+            movies=self.get_movies(), 
+            settings=self.application.settings,
+        )
+        
+    def get_movies(self):
+        movies = self.db.query("SELECT * FROM movies")
+        for movie in movies:
+            for key in ["infobar", "Writers", "Directors", "Stars"]:
+                o = self.db.get("SELECT value FROM metadata "
+                                "WHERE (movie_id=%s AND `key`=%s)",
+                                 movie.id, key)
+                if o is None: setattr(movie, key, None)
+                else:
+                    setattr(movie, key,
+                            lxml.html.fromstring(o.value).text_content().strip())                                                     
+                    
+        return movies
+
+
+class SearchHandler(BaseHandler):
     def get(self, q):
         self.title = "Next movies to watch"
         items = retrieve_items(q)
-        self.render("index.html", title=self.title, items=items, q=q)
+        self.render("search.html", title=self.title, items=items, q=q)
 
 
 class UpdateHandler(BaseHandler):

@@ -4,26 +4,38 @@ from download import download
 from thread_distributor import ThreadDistributor, Task
 import MySQLdb
 from credential import DB
-import time.time
+from datetime import datetime
+import urllib
 
-db = MySQLdb.connect(DB["host"], DB["name"], DB["user"], DB["passwd"])
+db = MySQLdb.connect(DB["host"], DB["user"], DB["passwd"], DB["name"])
 
 
 class DetailScrapeTask(Task):
 
     def run(self):
-        url, imdb_id = "www.imdb.com" + self.inp["url"], self.inp["imdb_id"]
+        url, imdb_id = "http://www.imdb.com" + self.inp["url"], self.inp["imdb_id"]
         id = self.inp["id"]
         dom = lxml.html.fromstring(download(url))
-        infobar = lxml.html.tostring(dom.xpath("//div[@class='infobar'][0]")[0])
         metadata = dict(map(
             lambda h4: (
-                h4.text.split(":")[0], 
-                map(lambda a: lxml.html.tostring(a), h4.xpath("self/following-sibling::a"))
+                h4.text.strip().split(":")[0], 
+                reduce(
+                    lambda x, y: x + y, 
+                    map(
+                        lambda a: lxml.html.tostring(a) if isinstance(a, lxml.html.HtmlElement) else a, 
+                        h4.xpath("following-sibling::node()")
+                    )
+                )
             ),
-            dom.xpath("//h4[@class='inline']")   
+            dom.xpath("//td[@id='overview-top']//h4[@class='inline']")   
         ))
-        print metadata
+        metadata["infobar"] = lxml.html.tostring(dom.xpath("//div[@class='infobar']")[0])
+        cursor = db.cursor()
+        for k, v in metadata.items():
+            cursor.execute("INSERT INTO metadata(movie_id, `key`, value) VALUES (%s, %s, %s)",
+                           (str(id), k, v))
+        
+        yield None
                 
 
 class NowPlayingScrapeTask(Task):
@@ -34,22 +46,22 @@ class NowPlayingScrapeTask(Task):
         names = dom.xpath("//a[@class='title']/text()")
         urls = dom.xpath("//a[@class='title']/attribute::href")
         plots = dom.xpath("//span[text()='The Plot:']/following::node()[1]")
-        cursor = db.cursor()
+        image = urllib.URLopener()
 
         for name, url, image_url, plot in zip(names, urls, image_urls, plots):
-            imdb_id = url.split("/")[-1]
+            cursor = db.cursor()
+            imdb_id = url.split("/")[-2]
+            image.retrieve(image_url, "../www/static/images/%s.png" % imdb_id)
             cursor.execute("INSERT IGNORE INTO movies (imdb_id, name, image_url,  plot, created_time)"
-                           "VALUES (%s, %s, %s, %s, %d)"\
-                           % (MySQLdb.escape_string(imdb_id),\
-                              MySQLdb.escape_string(name),\
-                              MySQLdb.escape_string(image_url),\
-                              MySQLdb.escape_string(plot),\
-                              time.time()))
-                              
-            self.distributor.add_task(
-                DetailScrapeTask, 
-                {"url": url, "imdb_id": imdb_id, "id": cursor.lastrowid}
-            )
+                           "VALUES (%s, %s, %s, %s, %s)",
+                           (imdb_id, name, image_url, plot,
+                            datetime.now().strftime("%Y-%m-%d %H:%M:%S") ))
+
+            if cursor.lastrowid != 0:                              
+                self.distributor.add_task(
+                    DetailScrapeTask, 
+                    {"url": url, "imdb_id": imdb_id, "id": cursor.lastrowid}
+                )
         
         yield None
 

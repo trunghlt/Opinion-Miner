@@ -1,32 +1,70 @@
 {% extends "base.html" %}
 
+{% block head %}
+<script language="javascript"> 
+$(document).ready(function(){
+	var img = new Image();
+	$(img).load(function() {
+		$(this).addClass("fullBg");
+		$("#body").append(this);
+		$(this).css("display", "none");
+		$(this).fullBg();
+		$(this).fadeIn(500);
+	}).attr("src", "{{ settings["background_image"] }}");
+	
+});
+</script> 
+{% end %}
+
 {% block header %}
     <h1>Top Hot Movies</h1>
-    <span id="introduction">As a part of <a href="http://www.trungh.com/" target="_blank">Trung Huynh's</a> PhD work</span>
+    <p id="introduction">As a part of <a href="http://www.trungh.com/" target="_blank">Trung Huynh's</a> PhD work | <a target="_blank" href="http://www.ucl.ac.uk/">University College of London</a>, UK<br/>
+    (Yeah, I stole the layout from <a target="_blank" href="http://twitter.com/">Twitter</a> :P)</p>
 {% end %}
 
 {% block main %}
-    <ul id="texts">
-    {% for item in items %}
-     <li>
-        <span class="sentiment">{{ item["sentiment"] }}</span>
-        <img class="profile" src="{{ item['profile_image_url'] }}"/>
-        <span class="status">{{ item["text"] }}</span>
-     </li>
-    {% end %}
-    </ul>
+    <div id="left">
+        <ul id="movies">
+        {% for movie in movies %}
+         <li rel="{{ movie.name }}">
+            <img class="poster" src="/static/images/posters/{{ movie.imdb_id }}.png"/>
+            <span class="title">
+                <a target="_blank" href="http://www.imdb.com/title/{{movie.imdb_id}}/">
+                    {{ movie.name }}
+                </a>
+            </span>
+            <p class="plot">{{ movie.plot }}</p>
+            <div class="clear"></div>
+            <div class="metadata">
+                <span class="infobar">{{ movie.infobar }}</span>
+            </div>
+         </li>
+        {% end %}
+        </ul>
+    </div>
+    <div id="right">
+        <div class="panel_head">Opinions</div>
+        <ul id="opinions">
+        </ul>
+    </div>
+    <div class="clear"></div>
 {% end %}
 
 {% block footer %}
 <script>
-function update() {
-    $.get("/update/{{ q }}", function(html) {
-        $("#texts").append(html);
+$(document).ready(function() {
+    currentIntervalId = null;
+    $("ul#movies li").click(function(){
+        var self = $(this);
+        $("#right").hide();
+                   
+        $.get("/"+self.attr("rel"), function(html) {
+            $("#opinions").html(html);
+            $("#right").css({"margin-top" : self.position().top}).show();
+        });
+        $("li.selected").removeClass("selected");
+        $(this).addClass("selected");
     });
-}
-
-$(document).ready(function(){
-    setInterval("update()", 5000);
 });
 </script>
 {% end %}
