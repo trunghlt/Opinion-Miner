@@ -16,3 +16,5 @@ SENTIMENT = dict (
 MEMCACHE = dict(
     address = "127.0.0.1:11212",
 )
+
+NNP_CFD_THRESHOLD = 0.02

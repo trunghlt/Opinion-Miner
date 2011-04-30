@@ -60,6 +60,8 @@ class LinearSVM(object):
             cls.log_size = config_parser.get("runtime", "log_size")
             cls.log = config_parser.get("runtime", "log")
             cls.ngram = int(config_parser.get("data", "ngram"))
+            cls.class_weights = bool(int(config_parser.get("output", "class_weights")))
+            cls.feature_weights = bool(int(config_parser.get("output", "feature_weights")))
         except Exception, e:
             raise Exception("Invalid config file:: %s" % e)
 
@@ -67,10 +69,10 @@ class LinearSVM(object):
 
         cls.logger = logging.getLogger(__name__)
         cls.logger.setLevel(cls.log_mode)
-        loggingHandler = logging.handlers.RotatingFileHandler(\
-            cls.log,\
-            maxBytes=int(cls.log_size),\
-            backupCount=5\
+        loggingHandler = logging.handlers.RotatingFileHandler(
+            cls.log,
+            maxBytes=int(cls.log_size),
+            backupCount=5
         )
         loggingHandler.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(message)s"))
         cls.logger.addHandler(loggingHandler)          
@@ -84,7 +86,8 @@ class LinearSVM(object):
         #right condition is:
         #if(nr_class==2 && model_->param.solver_type != MCSVM_CS)
         
-        cls.labels = map(lambda l: "class_"+l if l != "-1" else "negative", cls.fm.next()[1:])
+        cls.labels = cls.fm.next()[1:]
+        cls.dblabels = map(lambda l: "class_"+l if l != "-1" else "negative", cls.labels)
         cls.nr_feature = int(cls.fm.next()[-1])
         cls.bias = cls.fm.next()[-1]
         cls.lock = Lock()
@@ -99,7 +102,7 @@ class LinearSVM(object):
         
         sql_batch = 20
         sql = "INSERT IGNORE INTO svm_features "\
-              "(id, name, " + ",".join(cls.labels[:cls.nr_weight]) + ")"\
+              "(id, name, " + ",".join(cls.dblabels[:cls.nr_weight]) + ")"\
               "VALUES (%s, %s, "+",".join(["%s"]*cls.nr_weight)+")"
 
         values = []
@@ -123,7 +126,7 @@ class LinearSVM(object):
     @classmethod
     def vectorize(cls, review):
         names = Vectorizer.get_ngrams(review, cls.ngram)
-        sql = "SELECT name," + ",".join(cls.labels[:cls.nr_weight]) + "\
+        sql = "SELECT name," + ",".join(cls.dblabels[:cls.nr_weight]) + "\
                FROM svm_features\
                WHERE name=%s"
         vector = {}
@@ -136,22 +139,30 @@ class LinearSVM(object):
         return vector
         
     @classmethod
-    def predict_vector(cls, vector):
+    def predict_vector(cls, vector, return_class_weights=False):
         dec_values = [0] * cls.nr_weight
         for k, w in vector.items():
             for i in xrange(len(w)):
                 dec_values[i] += w[i]
+                
         if cls.nr_class == 2:
-            lbl = cls.labels[0] if dec_values[0] > 0 else cls.labels[1]
+            lbl = cls.dblabels[0] if dec_values[0] > 0 else cls.dblabels[1]
         else:
-            lbl = cls.labels[dec_values.index(max(dec_values))]
+            lbl = cls.dblabels[dec_values.index(max(dec_values))]
         
-        return lbl
+        class_weights = None
+        if return_class_weights:
+            class_weights = dict(zip(cls.labels, dec_values))
+            
+            
+        return lbl, class_weights
         
     @classmethod
     def predict(cls, review):
+        score, class_weights = cls.predict_vector(cls.vectorize(review), cls.class_weights)
         return dict(
-            score = cls.predict_vector(cls.vectorize(review)).split("_")[-1]
+            score = score.split("_")[-1],
+            weights = class_weights            
         )
     
 if __name__ == "__main__":
@@ -169,3 +180,4 @@ if __name__ == "__main__":
         LinearSVM.args.passwd,
         LinearSVM.args.db
     )
+    LinearSVM.save_to_db()

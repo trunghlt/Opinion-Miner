@@ -4,6 +4,7 @@ import tornado.ioloop
 import tornado.web
 import tornado.httpserver
 from twitter import Twitter
+from data_processing import utils
 import config
 import credential
 import demjson
@@ -28,16 +29,27 @@ def retrieve_items(q, rpp=5, since_id=0):
 
     filtered_items = []
     for item in items: 
+        filtered_text = Twitter.clean(item["text"], q)
         score = SAClient.score(
-            item["text"].encode("utf-8"), 
-#            return_confidence=True,
-#            confidence_type=Confidence.NNP,
+            filtered_text.encode("utf-8"), 
+            return_confidence=True,
+            confidence_type=Confidence.NNP,
         )
-        if score:
-            item["sentiment"] = score["score"]
-            filtered_items.append(item)
 
-    return filtered_items
+        if score and score["confidence"] > config.NNP_CFD_THRESHOLD:
+            item["sentiment"] = score["score"]
+            print filtered_text, score["weights"]
+        else:
+            item["sentiment"] = "-"
+            
+        if item["sentiment"] in set(["-", "3"]): 
+            item["nnp"] = "neutral"
+        elif item["sentiment"] in set(["1", "2"]):
+            item["nnp"] = "negative"
+        elif item["sentiment"] in set(["4", "5"]):
+            item["nnp"] = "positive"
+
+    return items
     
     
 def parse_settings(db):
@@ -90,7 +102,7 @@ class IndexHandler(BaseHandler):
         )
         
     def get_movies(self):
-        movies = self.db.query("SELECT * FROM movies")
+        movies = self.db.query("SELECT * FROM movies ORDER BY created_time DESC")
         for movie in movies:
             for key in ["infobar", "Writers", "Directors", "Stars"]:
                 o = self.db.get("SELECT value FROM metadata "

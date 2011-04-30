@@ -51,10 +51,10 @@ class NowPlayingScrapeTask(Task):
         for name, url, image_url, plot in zip(names, urls, image_urls, plots):
             cursor = db.cursor()
             imdb_id = url.split("/")[-2]
-            image.retrieve(image_url, "../www/static/images/%s.png" % imdb_id)
+            image.retrieve(image_url, "../www/static/images/posters/%s.png" % imdb_id)
             cursor.execute("INSERT IGNORE INTO movies (imdb_id, name, image_url,  plot, created_time)"
                            "VALUES (%s, %s, %s, %s, %s)",
-                           (imdb_id, name, image_url, plot,
+                           (imdb_id, name.encode("utf-8"), image_url, plot.encode("utf-8"),
                             datetime.now().strftime("%Y-%m-%d %H:%M:%S") ))
 
             if cursor.lastrowid != 0:                              
