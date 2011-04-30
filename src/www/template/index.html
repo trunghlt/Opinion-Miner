@@ -18,7 +18,7 @@ $(document).ready(function(){
 
 {% block header %}
     <h1>Top Hot Movies</h1>
-    <p id="introduction">As a part of <a href="http://www.trungh.com/" target="_blank">Trung Huynh's</a> PhD work | <a target="_blank" href="http://www.ucl.ac.uk/">University College of London</a>, UK<br/>
+    <p id="introduction">As a part of <a href="http://www.trungh.com/" target="_blank">Trung Huynh's</a> PhD work | <a target="_blank" href="http://www.ucl.ac.uk/">University College of London</a>, UK | Open-sourced at <a target="_blank" href="https://github.com/trunghlt/Opinion-Miner">Github</a><br/>
     (Yeah, I stole the layout from <a target="_blank" href="http://twitter.com/">Twitter</a> :P)</p>
 {% end %}
 
@@ -38,6 +38,7 @@ $(document).ready(function(){
             <div class="metadata">
                 <span class="infobar">{{ movie.infobar }}</span>
             </div>
+            <iframe src="http://www.facebook.com/plugins/like.php?href&amp;layout=standard&amp;show_faces=true&amp;width=455&amp;action=recommend&amp;font=lucida+grande&amp;colorscheme=light&amp;height=80" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:455px; height:25px;margin-top:10px" allowTransparency="true"></iframe>
          </li>
         {% end %}
         </ul>

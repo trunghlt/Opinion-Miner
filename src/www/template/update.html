@@ -1,0 +1,14 @@
+{% for item in items %}
+ <li>
+    <span class="sentiment">
+        {% if item["nnp"] in set(["negative", "positive"]) %}
+            <img src="{{static_url("images/%s.png" % item["nnp"])}}" />
+        {% else %}  
+            <div></div>
+        {% end %}
+    </span>
+    <img class="profile" src="{{ item['profile_image_url'] }}"/>
+    <span class="status">{{ item["text"] }}</span>
+    <div class="clear"></div>
+ </li>
+{% end %}
