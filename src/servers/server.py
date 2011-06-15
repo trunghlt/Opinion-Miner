@@ -7,22 +7,22 @@ import demjson
 from linear_svm import LinearSVM
 from argparse import ArgumentParser
 from ConfigParser import ConfigParser
+from config import options
 
-LEVELS = {'debug': logging.DEBUG,\
-          'info': logging.INFO,\
-          'warning': logging.WARNING,\
-          'error': logging.ERROR,\
-          'critical': logging.CRITICAL,\
-          'quiet': logging.NOTSET}
+LEVELS = {
+    'debug': logging.DEBUG,
+    'info': logging.INFO,
+    'warning': logging.WARNING,
+    'error': logging.ERROR,
+    'critical': logging.CRITICAL,
+    'quiet': logging.NOTSET
+}
 
 if __name__ == "__main__":
     parser = ArgumentParser(description="Musicmetric Sentiment Analysis Server")
     parser.add_argument("--config", dest="config", default="server.cfg")
     parser.add_argument("--stop", dest="stop", default=False, const=True, nargs="?")
-    parser.add_argument("--host", dest="host", default=None)
-    parser.add_argument("--user", dest="user", default=None)
-    parser.add_argument("--passwd", dest="passwd", default=None)
-    parser.add_argument("--db", dest="db", default=None)                        
+    parser.add_argument("--daemon", dest="daemon", default=False, const=True, nargs="?")
     args = parser.parse_args()
     
     config = ConfigParser()
@@ -91,7 +91,7 @@ class MyTCPHandler(SocketServer.BaseRequestHandler):
             self.server.terminate()
             self.request.send("0")
         else:            
-            LinearSVM.db_connect(args.host, args.user, args.passwd, args.db)
+            LinearSVM.db_connect(options.mysql_host, options.mysql_user, options.mysql_password, options.mysql_database)
             result = LinearSVM.predict(self.data)
             self.request.send(demjson.encode(result, encoding="utf-8"))
             logger.debug("%s: %s" % (self.data, result["score"]))
@@ -127,10 +127,12 @@ def stop():
         print "Error:: Can't connect to the server. Maybe it is not running!"    
 
 #---------------------------------------------------------------------------------
-if __name__ == "__main__":
+def run():
     if args.stop:
         stop()
     else:
         predictor()
 
 
+if __name__ == "__main__":
+    run()

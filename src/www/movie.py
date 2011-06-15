@@ -17,11 +17,6 @@ import tornado.database
 SAClient = Client(config=config.SENTIMENT["config"], enable_timer=False)
 Mem = memcache.Client([config.MEMCACHE["address"]], debug=0)
 
-define("port", default=8888, help="run on the given port", type=int)
-define("mysql_host", default=credential.DB["host"], help="database host")
-define("mysql_database", default=credential.DB["name"], help="database name")
-define("mysql_user", default=credential.DB["user"], help="database user")
-define("mysql_password", default=credential.DB["passwd"], help="database password")
 
 def retrieve_items(q, rpp=5, since_id=0):
     items = Twitter.search(q, rpp, since_id)
@@ -128,8 +123,12 @@ class UpdateHandler(BaseHandler):
         items = retrieve_items(q, since_id=Mem.get("last_tweet_id"))
         self.render("update.html", items=items)
         
-        
-if __name__ == "__main__":
+    
+def run():    
     http_server = tornado.httpserver.HTTPServer(Application())
     http_server.listen(7000)
     tornado.ioloop.IOLoop.instance().start()        
+
+if __name__ == "__main__":
+    run()
+
