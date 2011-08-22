@@ -1,0 +1,1 @@
+{{ demjson.encode(items, encoding="utf-8") }}

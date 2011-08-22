@@ -46,8 +46,8 @@ class MyThread(Thread):
         Thread.__init__(self)
         
 
-    def test_sent(self, return_confidence=True, \
-                        confidence_type = Confidence.LOCAL, \
+    def test_sent(self, return_confidence=True,
+                        confidence_type = Confidence.LOCAL,
                         confidence_threshold=CONFIDENCE_THRESHOLD):
         """ Test sentiment scoring
         
@@ -79,16 +79,16 @@ class MyThread(Thread):
             svm = self.client.score(review)
             predicted_sent = svm["score"]
 
-            max_prob_sent = max(zip(svm["probs"].keys(), svm["probs"].values()),\
+            max_prob_sent = max(zip(svm["probs"].keys(), svm["probs"].values()),
                                 key = lambda x: x[1])
 
-            raise Exception("Predicted score is different from the score with "+\
-                             "maximum probability: (%d, %d)" \
+            raise Exception("Predicted score is different from the score with "
+                             "maximum probability: (%d, %d)"\
                              % (predicted_sent, max_prob_sent))
      
                 
     def run(self):
-        self.test_sent(return_confidence=False,\
+        self.test_sent(return_confidence=False,
                        confidence_type=Confidence.LOCAL)
 
         

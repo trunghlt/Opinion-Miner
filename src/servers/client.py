@@ -55,23 +55,29 @@ class Confidence:
     
     #local confidence score of predicted class
     def local(self): 
-        return self.norm(self.sorted_scores[0][1] / self.sorted_scores[1][1])
+        return self.norm(self.sorted_scores[0][1] / self.second_norm(self.sorted_scores[1][1]))
+
+
+    # normalize second largest score, =1 if negative
+    @classmethod
+    def second_norm(cls, score):
+        n = score if score > 0 else EPS
+        return n 
     
-    
-    #NNP confidence score in the 3 class space - negative, neutral, possitive
+    # NNP confidence score in the 3 class space - negative, neutral, possitive
     def nnp(self):
         class_max, score_max = self.sorted_scores[0]
         if (class_max in set(["4","5"])):
             return self.norm(
-                score_max / max(map(lambda i: self.score_map[i], ["1", "2", "3"])) 
+                score_max / self.second_norm(max(map(lambda i: self.score_map[i], ["1", "2", "3"]))) 
             )
         elif (class_max in set(["1","2"])):
             return self.norm(
-                score_max / max(map(lambda i: self.score_map[i], ["3", "4", "5"]))
+                score_max / self.second_norm(max(map(lambda i: self.score_map[i], ["3", "4", "5"])))
             )
         else:
             return self.norm(
-                score_max / max(map(lambda i: self.score_map[i], ["1", "2", "4", "5"]))
+                score_max / self.second_norm(max(map(lambda i: self.score_map[i], ["1", "2", "4", "5"])))
             )    
             
             
