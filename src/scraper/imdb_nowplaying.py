@@ -4,7 +4,7 @@ from download import download
 from thread_distributor import ThreadDistributor, Task
 import MySQLdb
 from credential import DB
-import time.time
+import time
 
 db = MySQLdb.connect(DB["host"], DB["name"], DB["user"], DB["passwd"])
 
